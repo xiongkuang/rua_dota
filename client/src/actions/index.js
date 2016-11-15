@@ -18,12 +18,11 @@ export function signinUser({ email, password }) {
                 // - Update state to indicate user is authenticated
                 dispatch({ type: AUTH_USER });
                 // - Save the JWT token
-                console.log(response);
                 localStorage.setItem('token', response.data.token);
                 // - redirect to the route '/feature'
                 browserHistory.push('/feature');
             })
-            .catch(() => {
+            .catch(error => {
                 // If request is bad...
                 // - Show an error to the user
                 dispatch(authError('Bad Login Info'));
@@ -39,9 +38,9 @@ export function signupUser({ email, password }) {
                 localStorage.setItem('token', response.data.token);
                 browserHistory.push('/feature');
             })
-            .catch(response => {
-                console.log(response);
-                dispatch(authError('Please choose another email!'))
+            .catch(error => {
+                console.log(error.response.data);
+                dispatch(authError(error.response.data.error))
             });
     }
 }
@@ -58,3 +57,24 @@ export function signoutUser() {
 
     return { type: UNAUTH_USER };
 }
+
+export function fetchMessage(){
+    return function (dispatch) {
+        axios.get(ROOT_URL, {headers:{authorization: localStorage.getItem('token')}})
+            .then(response =>{
+                dispatch({
+                    type: FETCH_MESSAGE,
+                    payload: response.data.message
+                });
+            })
+    }
+}
+/** If use redux-promise
+export function fetchMessage() {
+    const request = axios.get(ROOT_URL, {headers:{authorization: localStorage.getItem('token')}});
+    return {
+        type: FETCH_MESSAGE,
+        payload: request
+    }
+}
+**/
