@@ -7,6 +7,8 @@ import {
     FETCH_MESSAGE
 } from './types';
 
+const API_KEY = '1F31482C189648752258A907BE5BDCF3';
+const DOTA2_WEB = 'http://'
 const ROOT_URL = 'http://localhost:3090';
 
 export function signinUser({ email, password }) {
@@ -78,3 +80,4 @@ export function fetchMessage() {
     }
 }
 **/
+
